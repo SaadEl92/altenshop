@@ -3,9 +3,11 @@ import { Product } from "app/products/data-access/product.model";
 import { ProductsService } from "app/products/data-access/products.service";
 import { ProductFormComponent } from "app/products/ui/product-form/product-form.component";
 import { ButtonModule } from "primeng/button";
+import { TagModule } from 'primeng/tag';
 import { CardModule } from "primeng/card";
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
+import { InputNumberModule } from "primeng/inputnumber";
 
 const emptyProduct: Product = {
   id: 0,
@@ -29,7 +31,7 @@ const emptyProduct: Product = {
   templateUrl: "./product-list.component.html",
   styleUrls: ["./product-list.component.scss"],
   standalone: true,
-  imports: [DataViewModule, CardModule, ButtonModule, DialogModule, ProductFormComponent],
+  imports: [DataViewModule, CardModule, ButtonModule, DialogModule, InputNumberModule, TagModule, ProductFormComponent],
 })
 export class ProductListComponent implements OnInit {
   private readonly productsService = inject(ProductsService);
@@ -76,4 +78,20 @@ export class ProductListComponent implements OnInit {
   private closeDialog() {
     this.isDialogVisible = false;
   }
+
+  getSeverity (product: Product) {
+    switch (product.inventoryStatus) {
+        case 'INSTOCK':
+            return 'success';
+
+        case 'LOWSTOCK':
+            return 'warning';
+
+        case 'OUTOFSTOCK':
+            return 'danger';
+
+        default:
+            return undefined;
+    }
+};
 }
