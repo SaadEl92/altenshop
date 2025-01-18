@@ -12,6 +12,8 @@ import { InputTextModule } from "primeng/inputtext";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CartService } from "app/shared/data-access/cart.service";
+import { DropdownModule } from "primeng/dropdown";
+import { SelectItem } from "primeng/api";
 
 const emptyProduct: Product = {
   id: 0,
@@ -39,6 +41,7 @@ const emptyProduct: Product = {
     DataViewModule, 
     CardModule, 
     ButtonModule, 
+    DropdownModule,
     DialogModule, 
     InputNumberModule, 
     TagModule, 
@@ -49,6 +52,7 @@ const emptyProduct: Product = {
     ProductFormComponent],
 })
 export class ProductListComponent implements OnInit {
+[x: string]: any;
   private readonly productsService = inject(ProductsService);
   private readonly cartService = inject(CartService);
 
@@ -59,8 +63,19 @@ export class ProductListComponent implements OnInit {
   public isCreation = false;
   public readonly editedProduct = signal<Product>(emptyProduct);
 
+  sortOptions!: SelectItem[];
+
+  sortOrder!: number;
+
+  sortField!: string;
+
   ngOnInit() {
     this.productsService.get().subscribe();
+
+    this.sortOptions = [
+      { label: 'Price High to Low', value: '!price' },
+      { label: 'Price Low to High', value: 'price' }
+    ];
   }
 
   public onCreate() {
@@ -112,6 +127,17 @@ export class ProductListComponent implements OnInit {
     }
   }
 
+  onSortChange(event: any) {
+    let value = event.value;
+
+    if (value.indexOf('!') === 0) {
+        this.sortOrder = -1;
+        this.sortField = value.substring(1, value.length);
+    } else {
+        this.sortOrder = 1;
+        this.sortField = value;
+    }
+  }
 
   addToCart(product: Product) {
     product.quantity ?? 1;

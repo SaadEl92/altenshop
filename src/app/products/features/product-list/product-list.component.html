@@ -2,7 +2,12 @@
 
 <p-button label="Créer produit" (onClick)="onCreate()" class="block text-center"/>
 {{cartItems() | json}}
-<p-dataView #dv [value]="products()" [rows]="3" [paginator]="true">
+<p-dataView #dv [value]="products()" [rows]="3" [paginator]="true" [sortField]="sortField" [sortOrder]="sortOrder">
+    <ng-template pTemplate="header">
+        <div class="flex flex-column md:flex-row md:justify-content-between">
+            <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By Price" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0" />
+        </div>
+    </ng-template>
     <ng-template pTemplate="list" let-products>
         @for (product of products; track product) {
             <p-card class="block mb-2">
