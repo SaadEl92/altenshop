@@ -1,8 +1,8 @@
 <h1 class="text-center">Liste des produits</h1>
 
 <p-button label="Créer produit" (onClick)="onCreate()" class="block text-center"/>
-
-<p-dataView #dv [value]="products()">
+{{cartItems() | json}}
+<p-dataView #dv [value]="products()" [rows]="3" [paginator]="true">
     <ng-template pTemplate="list" let-products>
         @for (product of products; track product) {
             <p-card class="block mb-2">
@@ -31,10 +31,31 @@
                         <div class="flex-none flex align-items-center justify-content-end">
                             <span class="text-xl font-semibold text-900">{{ '$' + product.price }}</span>
                         </div>
-                        <div class="flex-none flex align-items-center justify-content-start">
+                        <div class="flex-none flex align-items-center justify-content-between gap-2">
                             <div class="flex">
-                                <div class="flex-none flex ">
-                                    <p-button icon="pi pi-shopping-cart" class="flex-auto md:flex-initial white-space-nowrap" label="Buy Now" [disabled]="product.inventoryStatus === 'OUTOFSTOCK'" />
+                                <div class="flex-none flex">
+                                    <div class="formgroup-inline">
+                                        <div class="field">
+                                            <p-inputNumber 
+                                                [(ngModel)]="product.quantity"
+                                                [showButtons]="true"
+                                                buttonLayout="horizontal" 
+                                                spinnerMode="horizontal" 
+                                                inputId="horizontal"
+                                                [min]="1"
+                                                decrementButtonClass="p-button-primary"
+                                                incrementButtonClass="p-button-primary" 
+                                                incrementButtonIcon="pi pi-plus" 
+                                                decrementButtonIcon="pi pi-minus" 
+                                                inputStyleClass="max-w-3rem"/>
+                                        </div>
+                                    </div>
+                                    <p-button 
+                                        (onClick)="addToCart(product)"
+                                        icon="pi pi-shopping-cart" 
+                                        class="flex-auto md:flex-initial white-space-nowrap" 
+                                        label="Ajouter au panier" 
+                                        [disabled]="product.inventoryStatus === 'OUTOFSTOCK'" />
                                 </div>
                             </div>
                         </div>

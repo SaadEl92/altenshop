@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from "@angular/core";
 import { Product } from "./product.model";
 import { HttpClient } from "@angular/common/http";
-import { catchError, Observable, of, tap } from "rxjs";
+import { catchError, map, Observable, of, tap } from "rxjs";
 
 @Injectable({
     providedIn: "root"
@@ -19,6 +19,12 @@ import { catchError, Observable, of, tap } from "rxjs";
             catchError((error) => {
                 return this.http.get<Product[]>("assets/products.json");
             }),
+            map((products) => 
+              products.map(product => ({
+                ...product,
+                quantity: product.quantity ?? 1,
+              }))
+            ),
             tap((products) => this._products.set(products)),
         );
     }

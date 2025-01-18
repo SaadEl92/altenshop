@@ -8,6 +8,10 @@ import { CardModule } from "primeng/card";
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from "primeng/inputnumber";
+import { InputTextModule } from "primeng/inputtext";
+import { CommonModule } from "@angular/common";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { CartService } from "app/shared/data-access/cart.service";
 
 const emptyProduct: Product = {
   id: 0,
@@ -31,12 +35,25 @@ const emptyProduct: Product = {
   templateUrl: "./product-list.component.html",
   styleUrls: ["./product-list.component.scss"],
   standalone: true,
-  imports: [DataViewModule, CardModule, ButtonModule, DialogModule, InputNumberModule, TagModule, ProductFormComponent],
+  imports: [
+    DataViewModule, 
+    CardModule, 
+    ButtonModule, 
+    DialogModule, 
+    InputNumberModule, 
+    TagModule, 
+    InputTextModule, 
+    CommonModule, 
+    ReactiveFormsModule, 
+    FormsModule,
+    ProductFormComponent],
 })
 export class ProductListComponent implements OnInit {
   private readonly productsService = inject(ProductsService);
+  private readonly cartService = inject(CartService);
 
   public readonly products = this.productsService.products;
+  public readonly cartItems = this.cartService.cartItems;
 
   public isDialogVisible = false;
   public isCreation = false;
@@ -93,5 +110,11 @@ export class ProductListComponent implements OnInit {
         default:
             return undefined;
     }
-};
+  }
+
+
+  addToCart(product: Product) {
+    product.quantity ?? 1;
+    this.cartService.addToCart(product).subscribe();
+  }
 }
