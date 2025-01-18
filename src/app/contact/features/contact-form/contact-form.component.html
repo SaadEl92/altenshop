@@ -1,0 +1,60 @@
+<p-toast key="feedbackMessage"></p-toast>
+<div class="grid">
+    <div class="col-6 col-offset-2">
+        <form [formGroup]="contactFormGroup" (ngSubmit)="submit()">
+            <div class="gird">
+                form value: {{ contactFormGroup.value | json }} <br />
+                <div class="col-12">
+                    <p-card [header]="">
+                        <ng-template pTemplate="header">
+                            Contact Form
+                        </ng-template>
+                        <br><br>
+                        <div class="p-fluid p-formgrid grid">
+                            <div class="col-12 md:col-12">
+                                <div class="p-fluid p-formgrid grid">
+                                    <div class="field col-12 md:col-12">
+                                        <p-floatLabel>
+                                            <input type="email" pInputText id="email" formControlName="email"/>
+                                            <label for="email">Email:</label>
+                                        </p-floatLabel>
+                                        @if (contactFormGroup.controls.email.invalid 
+                                            && (contactFormGroup.controls.email.touched || contactFormGroup.controls.email.dirty)) 
+                                        {
+                                            @if (contactFormGroup.controls.email.errors?.["required"]) {
+                                                <small>*Email is required</small>
+                                            }        
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 md:col-12">
+                                <div class="p-fluid p-formgrid grid">
+                                    <div class="field col-12 md:col-12">
+                                        <p-floatLabel>
+                                            <textarea 
+                                                rows="5" 
+                                                cols="30"
+                                                id="message"
+                                                pInputTextarea 
+                                                formControlName="message">
+                                            </textarea>
+                                            <label for="message">Message:</label>
+                                        </p-floatLabel>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-template pTemplate="footer">
+                            <div class="flex flex-wrap gap-2 justify-content-end">
+                                <p-button pRipple label="Annuler" id="cancelBtn" (onClick)="cancel()"></p-button>
+                                <p-button pRipple label="Envoyer" icon="pi pi-check" [disabled]="!contactFormGroup.dirty" type="submit"></p-button>
+                            </div>
+                        </ng-template>
+                    </p-card>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

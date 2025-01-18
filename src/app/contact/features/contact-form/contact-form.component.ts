@@ -1,0 +1,52 @@
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { Message, MessageService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
+
+
+@Component({
+  selector: 'app-contact-form',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    ButtonModule,
+    CardModule,
+    FloatLabelModule,
+		ToastModule,
+		MessagesModule,
+    InputTextareaModule
+  ],
+  templateUrl: './contact-form.component.html',
+  styleUrl: './contact-form.component.css'
+})
+export class ContactFormComponent {
+
+  
+  contactFormGroup: FormGroup;
+
+  constructor(private formBuilder: FormBuilder, private service: MessageService) {
+    this.contactFormGroup = this.formBuilder.group({
+      email: new FormControl<string>("", [
+        Validators.required,
+        Validators.email
+      ]),
+      message: new FormControl<string>("")
+    });
+  }
+
+  cancel() {
+    throw new Error('Method not implemented.');
+  }
+  submit() {
+    this.service.add({ key: 'feedbackMessage', severity: 'success', summary: 'Success Message', detail: 'Message sent' });
+  }
+}
