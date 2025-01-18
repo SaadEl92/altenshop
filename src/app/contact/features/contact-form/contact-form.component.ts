@@ -39,7 +39,12 @@ export class ContactFormComponent {
         Validators.required,
         Validators.email
       ]),
-      message: new FormControl<string>("")
+      message: new FormControl<string>("", {
+        validators : [
+          Validators.required,
+          Validators.maxLength(2)
+        ],
+      })
     });
   }
 
@@ -47,6 +52,7 @@ export class ContactFormComponent {
     throw new Error('Method not implemented.');
   }
   submit() {
-    this.service.add({ key: 'feedbackMessage', severity: 'success', summary: 'Success Message', detail: 'Message sent' });
+    this.service.add({ key: 'feedbackMessage', severity: 'success', summary: 'Envoyé!', detail: 'Demande de contact envoyée avec succès' });
+    this.contactFormGroup.reset();
   }
 }

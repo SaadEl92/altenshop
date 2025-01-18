@@ -4,12 +4,10 @@
         <form [formGroup]="contactFormGroup" (ngSubmit)="submit()">
             <div class="gird">
                 form value: {{ contactFormGroup.value | json }} <br />
+                email errors: {{contactFormGroup.controls.email.errors | json}} <br />
+                message errors: {{contactFormGroup.controls.message.errors | json}}
                 <div class="col-12">
-                    <p-card [header]="">
-                        <ng-template pTemplate="header">
-                            Contact Form
-                        </ng-template>
-                        <br><br>
+                    <p-card [header]="'Contact Form'">
                         <div class="p-fluid p-formgrid grid">
                             <div class="col-12 md:col-12">
                                 <div class="p-fluid p-formgrid grid">
@@ -21,9 +19,12 @@
                                         @if (contactFormGroup.controls.email.invalid 
                                             && (contactFormGroup.controls.email.touched || contactFormGroup.controls.email.dirty)) 
                                         {
-                                            @if (contactFormGroup.controls.email.errors?.["required"]) {
-                                                <small>*Email is required</small>
+                                            @if (contactFormGroup.controls.email.hasError("required")) {
+                                                <small>*L'email est obligatoire</small>
                                             }        
+                                            @if (contactFormGroup.controls.email.hasError("email")) {
+                                                <small>*L'email n'est pas valide</small>
+                                            }     
                                         }
                                     </div>
                                 </div>
@@ -41,14 +42,23 @@
                                             </textarea>
                                             <label for="message">Message:</label>
                                         </p-floatLabel>
+                                        @if (contactFormGroup.controls.message.invalid 
+                                            && (contactFormGroup.controls.message.touched || contactFormGroup.controls.message.dirty)) 
+                                        {
+                                            @if (contactFormGroup.controls.message.hasError("required")) {
+                                                <small>*Le message est obligatoire</small>
+                                            }
+                                            @if (contactFormGroup.controls.message.hasError('maxlength')) {
+                                                <small>*Le message doit être inférieur à 300 caractères</small>
+                                            }   
+                                        }
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <ng-template pTemplate="footer">
                             <div class="flex flex-wrap gap-2 justify-content-end">
-                                <p-button pRipple label="Annuler" id="cancelBtn" (onClick)="cancel()"></p-button>
-                                <p-button pRipple label="Envoyer" icon="pi pi-check" [disabled]="!contactFormGroup.dirty" type="submit"></p-button>
+                                <p-button pRipple label="Envoyer" icon="pi pi-check" [disabled]="!contactFormGroup.dirty || contactFormGroup.invalid" type="submit"></p-button>
                             </div>
                         </ng-template>
                     </p-card>
