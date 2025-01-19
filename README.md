@@ -20,5 +20,5 @@ Le site de e-commerce d'Alten a besoin de s'enrichir de nouvelles fonctionnalit�
 
 ### Bonus : 
 
-- Ajouter un système de pagination et/ou de filtrage sur la liste des produits :white_check_mark: (pagination et tri sans filtrage)
+- Ajouter un système de pagination et/ou de filtrage sur la liste des produits :white_check_mark: (pagination et tri :x: sans filtrage)
 - On doit pouvoir visualiser et ajuster la quantité des produits depuis la liste et depuis le panier :white_check_mark:
