@@ -42,7 +42,7 @@ export class ContactFormComponent {
       message: new FormControl<string>("", {
         validators : [
           Validators.required,
-          Validators.maxLength(2)
+          Validators.maxLength(300)
         ],
       })
     });
